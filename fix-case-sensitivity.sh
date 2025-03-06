@@ -8,12 +8,18 @@ echo "Starting comprehensive fix for module resolution issues"
 # Strategy 1: Create a central components directory at the project root level
 echo "Strategy 1: Creating central components directory"
 mkdir -p components/ui
+mkdir -p components/pricing
 
 # Copy all UI components to the root components directory
 cp -f src/components/ui/*.tsx components/ui/
 cp -f src/components/ui/*.ts components/ui/ 2>/dev/null || true
 cp -f src/components/TypeformModal.tsx components/
 cp -f src/components/pricing/*.tsx components/pricing/ 2>/dev/null || true
+
+# Copy UI components to src/app directory for direct imports
+mkdir -p src/app/components/ui
+cp -f src/components/ui/*.tsx src/app/components/ui/
+cp -f src/components/ui/*.ts src/app/components/ui/ 2>/dev/null || true
 
 # Create an index.ts file in the root components/ui directory
 cat > components/ui/index.ts << 'EOL'
@@ -145,15 +151,39 @@ echo "Strategy 7: Updating import statements in key files"
 
 # Update imports in app/example-example/page.tsx
 if [ -f "src/app/example-example/page.tsx" ]; then
-  sed -i.bak 's|from "@/components/ui/button"|from "../../../components/ui/button"|g' src/app/example-example/page.tsx
-  sed -i.bak 's|from "@/components/ui/card"|from "../../../components/ui/card"|g' src/app/example-example/page.tsx
-  sed -i.bak 's|from "@/components/TypeformModal"|from "../../../components/TypeformModal"|g' src/app/example-example/page.tsx
+  # Create directories for direct imports
+  mkdir -p src/app/example-example/components/ui
+  mkdir -p src/app/example-example/components/pricing
+  
+  # Copy components directly to the page directory
+  cp -f src/components/ui/button.tsx src/app/example-example/components/ui/
+  cp -f src/components/ui/card.tsx src/app/example-example/components/ui/
+  cp -f src/components/TypeformModal.tsx src/app/example-example/components/
+  cp -f src/components/pricing/StandardPricingCard.tsx src/app/example-example/components/pricing/
+  cp -f src/components/pricing/PlusPricingCard.tsx src/app/example-example/components/pricing/
+  cp -f src/components/pricing/PremiumPricingCard.tsx src/app/example-example/components/pricing/
+  
+  # Update imports to use relative paths
+  sed -i.bak 's|from "@/components/ui/button"|from "./components/ui/button"|g' src/app/example-example/page.tsx
+  sed -i.bak 's|from "@/components/ui/card"|from "./components/ui/card"|g' src/app/example-example/page.tsx
+  sed -i.bak 's|from "@/components/TypeformModal"|from "./components/TypeformModal"|g' src/app/example-example/page.tsx
+  sed -i.bak 's|from "@/components/pricing/StandardPricingCard"|from "./components/pricing/StandardPricingCard"|g' src/app/example-example/page.tsx
+  sed -i.bak 's|from "@/components/pricing/PlusPricingCard"|from "./components/pricing/PlusPricingCard"|g' src/app/example-example/page.tsx
+  sed -i.bak 's|from "@/components/pricing/PremiumPricingCard"|from "./components/pricing/PremiumPricingCard"|g' src/app/example-example/page.tsx
   rm -f src/app/example-example/page.tsx.bak
   echo "Updated imports in src/app/example-example/page.tsx"
 fi
 
 # Update imports in components/TypeformModal.tsx
 if [ -f "src/components/TypeformModal.tsx" ]; then
+  # Create ui directory if it doesn't exist
+  mkdir -p src/components/ui
+  
+  # Copy UI components directly to the components directory
+  cp -f src/components/ui/button.tsx src/components/ui/
+  cp -f src/components/ui/dialog.tsx src/components/ui/
+  
+  # Update imports to use relative paths
   sed -i.bak 's|from "@/components/ui/button"|from "./ui/button"|g' src/components/TypeformModal.tsx
   sed -i.bak 's|from "@/components/ui/dialog"|from "./ui/dialog"|g' src/components/TypeformModal.tsx
   rm -f src/components/TypeformModal.tsx.bak
@@ -162,6 +192,14 @@ fi
 
 # Update imports in components/pricing/PricingCard.tsx
 if [ -f "src/components/pricing/PricingCard.tsx" ]; then
+  # Create ui directory if it doesn't exist
+  mkdir -p src/components/ui
+  
+  # Copy UI components directly to the components directory
+  cp -f src/components/ui/card.tsx src/components/ui/
+  cp -f src/components/ui/button.tsx src/components/ui/
+  
+  # Update imports to use relative paths
   sed -i.bak 's|from "@/components/ui/card"|from "../ui/card"|g' src/components/pricing/PricingCard.tsx
   sed -i.bak 's|from "@/components/ui/button"|from "../ui/button"|g' src/components/pricing/PricingCard.tsx
   rm -f src/components/pricing/PricingCard.tsx.bak
@@ -170,6 +208,10 @@ fi
 
 # Update imports in components/pricing/StandardPricingCard.tsx
 if [ -f "src/components/pricing/StandardPricingCard.tsx" ]; then
+  # Copy TypeformModal directly to the components directory
+  cp -f src/components/TypeformModal.tsx src/components/
+  
+  # Update imports to use relative paths
   sed -i.bak 's|from "@/components/TypeformModal"|from "../TypeformModal"|g' src/components/pricing/StandardPricingCard.tsx
   rm -f src/components/pricing/StandardPricingCard.tsx.bak
   echo "Updated imports in src/components/pricing/StandardPricingCard.tsx"
