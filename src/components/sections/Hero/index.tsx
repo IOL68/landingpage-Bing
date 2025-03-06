@@ -1,8 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/Button';
-import { Typography } from '@/components/ui/Typography';
-import { Container } from '@/components/ui/Container';
+import { Button } from '@/components/ui/button';
+import { Typography } from '@/components/ui/typography';
+import { Container } from '@/components/ui/container';
 import { ArrowRight, Shield, Clock, CheckCircle, GraduationCap, Quote, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

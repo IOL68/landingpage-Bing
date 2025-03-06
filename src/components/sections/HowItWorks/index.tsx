@@ -1,7 +1,7 @@
 'use client';
 
-import { Container } from '@/components/ui/Container';
-import { Typography } from '@/components/ui/Typography';
+import { Container } from '@/components/ui/container';
+import { Typography } from '@/components/ui/typography';
 import { Upload, Headphones, FileText } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 

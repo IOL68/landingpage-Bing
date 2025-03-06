@@ -1,8 +1,8 @@
 'use client';
 
-import { Container } from '@/components/ui/Container';
-import { Typography } from '@/components/ui/Typography';
-import { Button } from '@/components/ui/Button';
+import { Container } from '@/components/ui/container';
+import { Typography } from '@/components/ui/typography';
+import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Icon } from '@/components/ui/Icon';
 import { useEffect, useRef } from 'react';

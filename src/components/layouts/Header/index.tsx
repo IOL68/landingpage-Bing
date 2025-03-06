@@ -1,4 +1,4 @@
-import { Container } from '@/components/ui/Container'
+import { Container } from '@/components/ui/container'
 import Link from 'next/link'
 import Image from 'next/image'
 
