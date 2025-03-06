@@ -42,22 +42,45 @@ if [ -f "tsconfig.json" ]; then
   # Backup original tsconfig.json
   cp tsconfig.json tsconfig.json.bak
   
-  # Update paths in tsconfig.json using temporary files to avoid sed issues
-  cat tsconfig.json | jq '.compilerOptions.paths = {
-    "@/*": ["./src/*", "./*"],
-    "@/components/*": ["./src/components/*", "./components/*"],
-    "@/components/ui/*": ["./src/components/ui/*", "./components/ui/*", "./src/components/ui/*"]
-  }' > tsconfig.json.tmp
+  # Create a new tsconfig.json with updated paths
+  echo "Updating tsconfig.json with additional module resolution paths"
   
-  # Check if jq command succeeded
-  if [ $? -eq 0 ]; then
-    mv tsconfig.json.tmp tsconfig.json
-    echo "Updated tsconfig.json paths"
-  else
-    echo "Failed to update tsconfig.json with jq, trying manual update"
-    # Fallback to manual update if jq fails
-    sed -i.bak 's|"@/\*"|"@/\*": ["./src/\*", "./*"]|g' tsconfig.json
-  fi
+  # Create a temporary file with proper JSON syntax
+  cat > tsconfig.json.new << EOL
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*", "./*"],
+      "@/components/*": ["./src/components/*", "./components/*"],
+      "@/components/ui/*": ["./src/components/ui/*", "./components/ui/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+EOL
+
+  # Replace the original tsconfig.json with our new version
+  mv tsconfig.json.new tsconfig.json
+  echo "Updated tsconfig.json with additional module resolution paths"
 fi
 
 # Strategy 4: Create symbolic links for all UI components in node_modules
