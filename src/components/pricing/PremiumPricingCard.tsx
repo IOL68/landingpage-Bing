@@ -1,7 +1,7 @@
 import React from 'react';
 import PricingCard, { PricingFeature } from './PricingCard';
-import TypeformModal from '@/components/TypeformModal';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import TypeformModal from '../TypeformModal';
+import { Card, CardContent, CardHeader } from '../ui';
 import { Check } from 'lucide-react';
 
 const PremiumPricingCard: React.FC = () => {

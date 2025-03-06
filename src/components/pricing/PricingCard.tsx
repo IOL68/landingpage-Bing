@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, Button } from '../ui';
 import { Check } from 'lucide-react';
 
 export interface PricingFeature {

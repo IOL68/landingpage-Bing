@@ -6,6 +6,8 @@ frontend:
         - npm install
     build:
       commands:
+        - chmod +x ./fix-case-sensitivity.sh
+        - ./fix-case-sensitivity.sh
         - npm run build
         - npm run export
   artifacts:

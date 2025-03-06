@@ -5,13 +5,12 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Quote, Play, CheckCircle, Award, Users, BookOpen, User, Lock, GraduationCap, Clock, Building2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import CountUp from '@/components/CountUp';
-import TypeformModal from '@/components/TypeformModal';
-import StandardPricingCard from '@/components/pricing/StandardPricingCard';
-import PlusPricingCard from '@/components/pricing/PlusPricingCard';
-import PremiumPricingCard from '@/components/pricing/PremiumPricingCard';
+import { Button, Card, CardContent, CardHeader } from '../../../components/ui';
+import CountUp from '../../../components/CountUp';
+import TypeformModal from '../../../components/TypeformModal';
+import StandardPricingCard from '../../../components/pricing/StandardPricingCard';
+import PlusPricingCard from '../../../components/pricing/PlusPricingCard';
+import PremiumPricingCard from '../../../components/pricing/PremiumPricingCard';
 
 // Section 1: Hero Section
 const HeroSection = () => {
