@@ -1,6 +1,6 @@
 import React from 'react';
 import PricingCard, { PricingFeature } from './PricingCard';
-import TypeformModal from '@/components/TypeformModal';
+import TypeformModal from '../TypeformModal';
 
 const StandardPricingCard: React.FC = () => {
   const features: PricingFeature[] = [

@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Button
-} from "./ui";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface TypeformModalProps {
   children?: React.ReactNode;
