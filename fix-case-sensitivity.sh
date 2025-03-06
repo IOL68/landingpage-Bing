@@ -1,51 +1,67 @@
 #!/bin/bash
 
-# Create uppercase copies of UI component files to handle case sensitivity issues
-cd src/components/ui
+# This script modifies imports in component files to use relative paths instead of @/ aliases
+# This helps with module resolution during static export builds
 
-# Create uppercase copies for commonly used components
-cp button.tsx Button.tsx
-cp card.tsx Card.tsx
-cp dialog.tsx Dialog.tsx
-cp container.tsx Container.tsx
-cp typography.tsx Typography.tsx
-cp Icon.tsx Icon.tsx
+# Function to replace imports in a file
+replace_imports() {
+  local file=$1
+  if [ -f "$file" ]; then
+    echo "Updating imports in $file"
+    # Replace @/components/ui/button with relative path
+    sed -i.bak 's|@/components/ui/button|../../../components/ui/button|g' "$file"
+    # Replace @/components/ui/card with relative path
+    sed -i.bak 's|@/components/ui/card|../../../components/ui/card|g' "$file"
+    # Replace @/components/ui/dialog with relative path
+    sed -i.bak 's|@/components/ui/dialog|../../../components/ui/dialog|g' "$file"
+    # Replace @/components/TypeformModal with relative path
+    sed -i.bak 's|@/components/TypeformModal|../../../components/TypeformModal|g' "$file"
+    # Clean up backup files
+    rm -f "$file.bak"
+  fi
+}
 
-# Create a backup of the original index.ts file if it exists
-if [ -f index.ts ]; then
-  cp index.ts index.ts.bak
-fi
+# Update imports in app components
+replace_imports "src/app/example-example/page.tsx"
 
-# Create an index.ts file that exports all components
-cat > index.ts << 'EOL'
-// Export all UI components from a single file
-// This helps with module resolution during static export builds
+# Function to replace imports in component files
+replace_component_imports() {
+  local file=$1
+  if [ -f "$file" ]; then
+    echo "Updating imports in $file"
+    # Replace @/components/ui/button with relative path
+    sed -i.bak 's|@/components/ui/button|./ui/button|g' "$file"
+    # Replace @/components/ui/card with relative path
+    sed -i.bak 's|@/components/ui/card|./ui/card|g' "$file"
+    # Replace @/components/ui/dialog with relative path
+    sed -i.bak 's|@/components/ui/dialog|./ui/dialog|g' "$file"
+    # Clean up backup files
+    rm -f "$file.bak"
+  fi
+}
 
-export * from './accordion';
-export * from './button';
-export * from './card';
-export * from './container';
-export * from './dialog';
-export * from './form';
-export * from './input';
-export * from './label';
+# Update imports in component files
+replace_component_imports "src/components/TypeformModal.tsx"
 
-// Handle naming conflicts by explicitly re-exporting
-import { Toaster as SonnerToaster } from './sonner';
-export { SonnerToaster };
+# Function to replace imports in pricing component files
+replace_pricing_imports() {
+  local file=$1
+  if [ -f "$file" ]; then
+    echo "Updating imports in $file"
+    # Replace @/components/ui/button with relative path
+    sed -i.bak 's|@/components/ui/button|../ui/button|g' "$file"
+    # Replace @/components/ui/card with relative path
+    sed -i.bak 's|@/components/ui/card|../ui/card|g' "$file"
+    # Replace @/components/TypeformModal with relative path
+    sed -i.bak 's|@/components/TypeformModal|../TypeformModal|g' "$file"
+    # Clean up backup files
+    rm -f "$file.bak"
+  fi
+}
 
-export * from './textarea';
-export * from './toast';
+# Update imports in pricing component files
+replace_pricing_imports "src/components/pricing/PricingCard.tsx"
+replace_pricing_imports "src/components/pricing/PremiumPricingCard.tsx"
+replace_pricing_imports "src/components/pricing/StandardPricingCard.tsx"
 
-// Import and re-export from toaster.tsx with its original name
-import { Toaster } from './toaster';
-export { Toaster };
-
-export * from './tooltip';
-export * from './typography';
-export * from './use-toast';
-export * from './Icon';
-export * from './Badge';
-EOL
-
-echo "Created uppercase copies and index exports for UI components"
+echo "Updated imports in component files to use relative paths"
