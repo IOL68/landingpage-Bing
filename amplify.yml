@@ -7,10 +7,9 @@ frontend:
         - npm install
     build:
       commands:
-        - chmod +x ./fix-case-sensitivity.sh
-        - ./fix-case-sensitivity.sh
+        - chmod +x ./simple-fix.sh
+        - ./simple-fix.sh
         - npm run build
-        - npm run export
   artifacts:
     baseDirectory: out
     files:
