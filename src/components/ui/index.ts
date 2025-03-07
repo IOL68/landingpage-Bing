@@ -24,5 +24,5 @@ export { Toaster };
 export * from './tooltip';
 export * from './typography';
 export * from './use-toast';
-export * from './Icon';
-export * from './Badge';
+export * from './icon';
+export * from './badge';

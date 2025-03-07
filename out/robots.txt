@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://getlandmark.thelai.com/sitemap.xml
+
+# Optimizations for Googlebot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1

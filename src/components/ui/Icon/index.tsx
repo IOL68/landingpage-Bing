@@ -4,6 +4,7 @@ import { LucideIcon } from 'lucide-react'
 interface IconProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: LucideIcon
   variant?: 'default' | 'primary' | 'secondary' | 'muted'
+  iconSize?: string
 }
 
 const variants = {
@@ -13,10 +14,17 @@ const variants = {
   muted: 'text-muted-foreground',
 }
 
-export function Icon({ icon: Icon, variant = 'default', className, ...props }: IconProps) {
+const sizes: Record<string, string> = {
+  sm: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
+  xl: 'w-8 h-8',
+}
+
+export function Icon({ icon: Icon, variant = 'default', iconSize, className, ...props }: IconProps) {
   return (
     <div className={cn(variants[variant], className)} {...props}>
-      <Icon />
+      <Icon className={iconSize && sizes[iconSize] ? sizes[iconSize] : undefined} />
     </div>
   )
 }
