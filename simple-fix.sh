@@ -11,6 +11,7 @@ echo "Creating consistent lowercase copies of UI components"
 # Create necessary directories
 mkdir -p .next/components/ui
 mkdir -p .next/components/pricing
+mkdir -p .next/components/ui/icon
 
 # Copy UI components with consistent lowercase naming
 for file in src/components/ui/*.tsx src/components/ui/*.ts; do
@@ -21,6 +22,17 @@ for file in src/components/ui/*.tsx src/components/ui/*.ts; do
     echo "Copied $basename to .next/components/ui/$lowercase_name"
   fi
 done
+
+# Special handling for Icon directory (case sensitivity issue)
+if [ -d "src/components/ui/Icon" ]; then
+  echo "Handling Icon directory case sensitivity"
+  cp -f src/components/ui/Icon/index.tsx .next/components/ui/icon/
+  echo "Copied Icon/index.tsx to icon/index.tsx"
+elif [ -d "src/components/ui/icon" ]; then
+  echo "Handling icon directory (lowercase)"
+  cp -f src/components/ui/icon/index.tsx .next/components/ui/icon/
+  echo "Copied icon/index.tsx to icon/index.tsx"
+fi
 
 # Copy TypeformModal and pricing components
 cp -f src/components/TypeformModal.tsx .next/components/
@@ -67,11 +79,14 @@ cp -f src/components/features/*.tsx .next/components/features/ 2>/dev/null || tr
 # 2. Create symbolic links in node_modules for @/ imports
 echo "Creating symbolic links for @/ imports"
 mkdir -p node_modules/@/components/ui
+mkdir -p node_modules/@/components/ui/icon
 mkdir -p node_modules/@/components/pricing
 mkdir -p node_modules/@/components/features
 
 # Link UI components
-ln -sf $(pwd)/.next/components/ui/* node_modules/@/components/ui/
+ln -sf $(pwd)/.next/components/ui/*.tsx node_modules/@/components/ui/
+ln -sf $(pwd)/.next/components/ui/*.ts node_modules/@/components/ui/
+ln -sf $(pwd)/.next/components/ui/icon/index.tsx node_modules/@/components/ui/icon/
 ln -sf $(pwd)/.next/components/TypeformModal.tsx node_modules/@/components/
 ln -sf $(pwd)/.next/components/pricing/* node_modules/@/components/pricing/
 ln -sf $(pwd)/.next/components/features/* node_modules/@/components/features/
@@ -108,7 +123,8 @@ if [ -f "tsconfig.json" ]; then
       "@/*": ["./src/*", "./*"],
       "@/components/*": ["./src/components/*", "./.next/components/*", "./node_modules/@/components/*"],
       "@/components/ui/*": ["./src/components/ui/*", "./.next/components/ui/*", "./node_modules/@/components/ui/*"],
-      "@/components/features/*": ["./src/components/features/*", "./.next/components/features/*", "./node_modules/@/components/features/*"]
+      "@/components/features/*": ["./src/components/features/*", "./.next/components/features/*", "./node_modules/@/components/features/*"],
+      "@/components/ui/icon/*": ["./src/components/ui/icon/*", "./src/components/ui/Icon/*", "./.next/components/ui/icon/*", "./node_modules/@/components/ui/icon/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
